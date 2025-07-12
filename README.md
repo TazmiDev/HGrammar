@@ -40,9 +40,7 @@ HGrammar/
 │   ├── ui/               # 用户界面
 │   │   ├── style.css
 │   │   └── script.js
-│   └── data/             # 数据文件
-│       └── templates.json
-├── index.html            # 入口页面（已移至根目录）
+├── index.html            # 入口页面
 ├── package.json
 └── README.md
 ```
