@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HGrammar - 搜索语法生成工具</title>
+    <link rel="stylesheet" href="build/style.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-search"></i>
+                <h1>HGrammar</h1>
+            </div>
+            <p class="subtitle">搜索语法生成工具 - 为安全工作者提供快速搜索语法生成</p>
+        </header>
+
+        <main class="main">
+            <div class="search-panel">
+                <div class="engine-selector">
+                    <label for="engine">选择搜索引擎:</label>
+                    <select id="engine" class="engine-select">
+                        <option value="google">Google</option>
+                        <option value="baidu">百度</option>
+                        <option value="so360">360搜索</option>
+                        <option value="fofa">FOFA</option>
+                        <option value="hunter">Hunter</option>
+                        <option value="shodan">Shodan</option>
+                    </select>
+                </div>
+
+                <div class="template-selector">
+                    <label for="template">选择语法模板:</label>
+                    <select id="template" class="template-select">
+                        <option value="site">网站搜索 (site:)</option>
+                        <option value="filetype">文件类型搜索 (filetype:)</option>
+                        <option value="intitle">标题搜索 (intitle:)</option>
+                        <option value="inurl">URL搜索 (inurl:)</option>
+                        <option value="intext">内容搜索 (intext:)</option>
+                        <option value="exclude">排除搜索 (-)</option>
+                        <option value="date">时间范围搜索</option>
+                        <option value="combined">组合搜索</option>
+                    </select>
+                </div>
+
+                <div class="params-container" id="paramsContainer">
+                    <!-- 动态生成的参数输入框 -->
+                </div>
+
+                <div class="advanced-options" id="advancedOptions" style="display: none;">
+                    <h4>高级选项</h4>
+                    <div class="advanced-grid" id="advancedGrid">
+                        <!-- 动态生成的高级选项复选框 -->
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="generateBtn" class="btn btn-primary">
+                        <i class="fas fa-magic"></i>
+                        生成语法
+                    </button>
+                    <button id="clearBtn" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i>
+                        清空
+                    </button>
+                </div>
+            </div>
+
+            <div class="result-panel" id="resultPanel" style="display: none;">
+                <div class="result-header">
+                    <h3>生成结果</h3>
+                    <div class="result-actions">
+                        <button id="copyBtn" class="btn btn-small">
+                            <i class="fas fa-copy"></i>
+                            复制
+                        </button>
+                        <button id="exportBtn" class="btn btn-small">
+                            <i class="fas fa-download"></i>
+                            导出
+                        </button>
+                        <button id="openBtn" class="btn btn-small">
+                            <i class="fas fa-external-link-alt"></i>
+                            打开
+                        </button>
+                    </div>
+                </div>
+                <div class="result-content">
+                    <div class="result-item">
+                        <label>搜索语法:</label>
+                        <textarea class="query-edit" id="queryEdit" rows="1" style="width:100%;resize:vertical;"></textarea>
+                    </div>
+                    <div class="result-item">
+                        <label>完整URL:</label>
+                        <div class="url-display" id="urlDisplay"></div>
+                    </div>
+                    <div class="result-item">
+                        <label>描述:</label>
+                        <div class="description-display" id="descriptionDisplay"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-panel">
+                <div class="history-header">
+                    <h3>历史记录</h3>
+                    <div class="history-actions">
+                        <button id="exportHistoryBtn" class="btn btn-small" title="导出历史记录">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button id="clearHistoryBtn" class="btn btn-small btn-danger" title="清除所有历史记录">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="history-search">
+                    <div class="search-input-group">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="historySearchInput" placeholder="搜索历史记录..." class="history-search-input">
+                        <button id="clearSearchBtn" class="btn btn-small" title="清除搜索" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- 历史记录项 -->
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+
+            <div class="sidebar-section">
+                <h3>快速模板</h3>
+                <div class="quick-templates" id="quickTemplates">
+                    <!-- 快速模板 -->
+                </div>
+            </div>
+        </aside>
+    </div>
+    <footer class="footer">
+        <a href="https://github.com/TazmiDev/HGrammar" class="github-icon-btn" target="_blank" rel="noopener" title="访问开源项目">
+            <svg class="github-icon" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 0.297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387 0.6 0.113 0.82-0.258 0.82-0.577 0-0.285-0.011-1.04-0.017-2.04-3.338 0.726-4.042-1.416-4.042-1.416-0.546-1.387-1.333-1.756-1.333-1.756-1.089-0.745 0.083-0.729 0.083-0.729 1.205 0.084 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495 0.997 0.108-0.775 0.418-1.305 0.762-1.605-2.665-0.305-5.466-1.334-5.466-5.931 0-1.311 0.469-2.381 1.236-3.221-0.124-0.303-0.535-1.523 0.117-3.176 0 0 1.008-0.322 3.301 1.23 0.957-0.266 1.983-0.399 3.003-0.404 1.02 0.005 2.047 0.138 3.006 0.404 2.291-1.553 3.297-1.23 3.297-1.23 0.653 1.653 0.242 2.873 0.119 3.176 0.77 0.84 1.235 1.91 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921 0.43 0.372 0.823 1.102 0.823 2.222 0 1.606-0.015 2.898-0.015 3.293 0 0.322 0.216 0.694 0.825 0.576 4.765-1.589 8.199-6.085 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+        </a>
+    </footer>
+
+    <!-- 压缩后的脚本文件 -->
+    <script src="build/core.min.js"></script>
+    <script src="build/modules.min.js"></script>
+    <script src="build/script.min.js"></script>
+
+    <!-- 自定义弹窗 -->
+    <div id="customModal" class="custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">提示</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">消息内容</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="modalConfirm">确定</button>
+                <button class="btn btn-secondary" id="modalCancel" style="display: none;">取消</button>
+            </div>
+        </div>
+    </div>
+    <div class="github-drawer" id="githubDrawer">
+        <a href="https://github.com/TazmiDev/HGrammar" class="github-drawer-btn" target="_blank" rel="noopener" title="访问开源项目">
+            <svg class="github-icon" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 0.297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387 0.6 0.113 0.82-0.258 0.82-0.577 0-0.285-0.011-1.04-0.017-2.04-3.338 0.726-4.042-1.416-4.042-1.416-0.546-1.387-1.333-1.756-1.333-1.756-1.089-0.745 0.083-0.729 0.083-0.729 1.205 0.084 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495 0.997 0.108-0.775 0.418-1.305 0.762-1.605-2.665-0.305-5.466-1.334-5.466-5.931 0-1.311 0.469-2.381 1.236-3.221-0.124-0.303-0.535-1.523 0.117-3.176 0 0 1.008-0.322 3.301 1.23 0.957-0.266 1.983-0.399 3.003-0.404 1.02 0.005 2.047 0.138 3.006 0.404 2.291-1.553 3.297-1.23 3.297-1.23 0.653 1.653 0.242 2.873 0.119 3.176 0.77 0.84 1.235 1.91 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921 0.43 0.372 0.823 1.102 0.823 2.222 0 1.606-0.015 2.898-0.015 3.293 0 0.322 0.216 0.694 0.825 0.576 4.765-1.589 8.199-6.085 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+        </a>
+    </div>
+</body>
+
+</html>

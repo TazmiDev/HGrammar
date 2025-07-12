@@ -1,0 +1,30 @@
+{
+  "name": "hgrammar",
+  "version": "1.0.0",
+  "description": "搜索语法生成工具 - 为安全工作者提供快速搜索语法生成",
+  "main": "src/ui/index.html",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "dev": "live-server --port=3000",
+    "build": "node build.js",
+    "test": "echo 'test'"
+  },
+  "keywords": [
+    "search",
+    "grammar",
+    "security",
+    "google",
+    "baidu",
+    "fofa",
+    "hunter"
+  ],
+  "author": "HGrammar Team",
+  "license": "MIT",
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "cross-env": "^7.0.3",
+    "javascript-obfuscator": "^4.1.1",
+    "live-server": "^1.2.2",
+    "uglify-js": "^3.19.3"
+  }
+}
