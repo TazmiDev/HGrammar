@@ -57,8 +57,7 @@ npm install
 npm run build
 npm start
 ```
-访问：http://localhost:3000/index.html
-
+访问：http://localhost:3000/
 ## 构建发布
 
 ```bash
